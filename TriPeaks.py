@@ -97,6 +97,7 @@ class TriPeaks(object):
     # Run:  TriPeaks.printBoard()
     def printBoard(self):
         ''' Prints the board to the console '''
+        print "---------------------------------------"        
         print "Cards in board: \n"
         # Row 0
         for c in range(3):
@@ -157,7 +158,7 @@ class TriPeaks(object):
                         self.heap.append(c) 
                         return c
                     else:
-                        print "This move is not legal, try again!"
+                        print "\nThis move is not legal, try again!"
         
 
     # Pre:  self.deck contains at least one Card object, self.heap is a
@@ -276,8 +277,8 @@ class TriPeaks(object):
         elif userInput[0] == "quit":
             self.quitGame()
         else:
-            print "Unknown command, remember to write 'help' to view known inputs"
-            print "and the rules of the game."
+            print "\nUnknown command, remember to write 'help' to view known inputs"
+            print "and the rules of the game.\n"
 
     # Writes out in the end of game if you have won or lost
     def gameSettlement(self):
