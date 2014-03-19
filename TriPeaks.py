@@ -284,6 +284,7 @@ class TriPeaks(object):
         ''' Writes out message to the user after the game '''
         if self.hasWon():
             self.elapsedTime()
+            self.addScore(len(self.deck)*150)
             print ''
             print "You won, congratulations! You are a Tri Peaks master"
             print "Your time was", self.finaltime, "seconds"

@@ -1,0 +1,115 @@
+\documentclass[12pt]{article}
+%\usepackage[dvips]{epsfig}
+\usepackage{graphicx} 
+\usepackage{epstopdf}
+\usepackage[T1]{fontenc}
+\usepackage{mathtools}
+\usepackage{listings}
+\usepackage{pdfpages}
+\usepackage{multirow}
+\usepackage[icelandic]{babel}
+{\obeyspaces\gdef {\leavevmode\null\enskip\null}}
+\oddsidemargin=0in \evensidemargin=0in
+\textwidth=6.35in
+\headheight=0pt \headsep=0pt \topmargin=0in
+\textheight=9.8in
+\usepackage{tikz}
+\usepgflibrary{shapes}
+\newcommand{\tk}{Ti\textit{k}Z}
+\def\DV{DVIto\kern-.1em VDU}
+
+\DeclareSymbolFont{extraup}{U}{zavm}{m}{n}
+\DeclareMathSymbol{\varheart}{\mathalpha}{extraup}{86}
+\DeclareMathSymbol{\vardiamond}{\mathalpha}{extraup}{87}
+
+\newcommand{\ba}{\begin{array}}
+\newcommand{\ea}{\end{array}}
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\benum}{\begin{enumerate}}
+\newcommand{\eenum}{\end{enumerate}}
+\newcommand{\bfig}{\begin{figure}}
+\newcommand{\efig}{\end{figure}}
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}
+\newcommand{\bt}{\begin{tabular}}
+\newcommand{\et}{\end{tabular}}
+\newcommand{\qed}{\framebox[2mm]{}}
+
+
+\begin{document}
+\begin{center}
+\textsc{Háskóli Íslands}
+\end{center}
+\vspace*{5cm}
+
+\large {\bf
+\begin{center}
+\noindent\rule{15cm}{0.4pt}
+\textsc{Þróun Hugbúnaðar}\\ \textsc{Hópverkefni 2b}\\ Tri Peaks \\
+\noindent\rule{13cm}{0.4pt} \end{center}}
+\small
+\vspace{5cm}
+\begin{center}
+Ágúst Ingi Skarphéðinsson\\Guðrún Kristín Einarsdóttir\\Kári Ragnarsson\\Priyaphon Kaengjaroenkasikorn\\ Valur 
+Sigurbjörn Pálmarsson
+\end{center}
+\vspace{5cm}
+\begin{center}
+\today
+\end{center} 
+
+\newpage \normalsize 
+\newpage
+
+\section{Áætlun}
+Verkáætlun fyrir ítrun 1 má sjá á mynd 1 hér að neðan.
+
+\begin{figure}[!ht]
+  \centering
+    \includegraphics[width=0.9\textwidth]{mynd1.png}
+    \caption{Ítrun 1}
+\end{figure}
+
+Allir verkþættir ítrunarinnar hafa verið framkvæmdir og virka í terminal. Ákveðið var að fá fulla kapalsvirkni í terminal áður en hafist var við grafískt notendaviðmót. Eftir ítrun 1 er virkni kapalsins nánast tilbúin. Hægt er að spila leikinn uppfyllir hann allar reglur kapalsins. Einnig tekur hann saman stig spilara, tíma, 'moves' notanda og heldur utan um fimm hæstu spilara og geymir þá þrátt fyrir að keyrslu sé hætt.
+
+\section{Verkþættir}
+Notendasögurnar á áætlininni hafa verið sundurliðaðar í verkþætti. Hér að neðan má sjá notendasögur fyrir ítrun eitt og verkþætti þeirra.
+
+\subsubsection*{Hefja nýjan leik}
+\begin{itemize}
+\item Fall sem athugar hvort kapallinn sé búinn
+\item Deck fyrir spil sem eru í borði
+\item Listi fyrir spil sem eru í hrúgu
+\item Listi fyrir spil sem eru í stokki
+\item Breyta fyrir stig
+\item Breyta fyrir tíma
+\item Breyta fyrir 'moves'
+\item Útfæra reglur leiksins
+\item Fall sem athugar hvort 'move' sé löglegt
+\item Fall sem prentar út stöðuna í Console
+\item Fall sem tekur við 'user inputs' og meðhöndlar þau
+\item Fall sem færir spil úr borði í hrúgu
+\item Fall sem færir spil úr stokk í hrúgu
+\item Fall sem heldur utanum stig leiksins
+\item Fall sem tekur tímann á núverandi leik
+\item Fall sem stokkar spilin
+\item Fall sem finnur næsta spil í stokknum
+\item Fall sem fjarlægir spil úr stokknum
+\item Fall sem bætir spili í stokkinn 
+\item Breyta fyrir fjölda spila í stokknum
+\item Listi yfir spil í stokknum
+\item Fall sem segir hvort stokkur sé tómur
+\end{itemize}
+
+\subsubsection*{Hætta leiknum}
+\begin{itemize}
+\item Fall sem hættir í leiknum 
+\end{itemize}
+
+\subsubsection*{Sjá reglur leiksins}
+\begin{itemize}
+\item Fall sem prentar reglur leiksins
+\end{itemize}
+
+\end{document}
