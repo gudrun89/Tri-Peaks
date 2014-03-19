@@ -139,7 +139,7 @@ class TriPeaks(object):
         ''' Handles user inputs '''
         user = ''
         while (len(user) < 1):
-            user = raw_input("What is your move? ").split()
+            user = raw_input("\nWhat is your move? ").split()
         return user
 
     # Pre:  cardString is a string
@@ -298,25 +298,29 @@ class TriPeaks(object):
     def showRules(self):
         ''' Prints the game rules to the terminal'''
         print """
-        TRI-PEAKS RULES:
-        ----------------
-        The object of Tri-Peaks is to transfer all the cards from the board
-        to the heap.
-
-        You can move a card from the board that has a value one lower or
-        higher than the top card on the heap if it is not covered by
-        another card.
-
-        If you run out of moves you can move a card from the deck to the
-        heap and try again to move a card from the board.
-        
-        How to play:
-            Write "draw" to draw a card from the deck
-            Write "move H7" to move H7 from board to heap
-            Write "help" to view this message
-            Write "top5" to view the highscore table
-            Write "quit" to quit the game
+    ---------------------------------------------------------------------------
+    '    TRI-PEAKS RULES:                                                     '
+    '   ----------------                                                      '
+    '   The object of Tri-Peaks is to transfer all the cards from the board   '
+    '   to the heap.                                                          '
+    '                                                                         '
+    '   You can move a card from the board that has a value one lower or      '
+    '   higher than the top card on the heap if it is not covered by          '
+    '   another card.                                                         '
+    '                                                                         '
+    '   If you run out of moves you can move a card from the deck to the      '
+    '   heap and try again to move a card from the board.                     '
+    '                                                                         '    
+    '   How to play:                                                          '    
+    '       Write "draw" to draw a card from the deck                         '
+    '       Write "move H7" to move H7 from board to heap                     '        
+    '       Write "help" to view this message                                 '
+    '       Write "top5" to view the highscore table                          '
+    '       Write "quit" to quit the game                                     '
+    '                                                                         '
+    ---------------------------------------------------------------------------
         """ 
+
 
     # Post: runs the game logic
     # Run:  TriPeaks.playGame()
