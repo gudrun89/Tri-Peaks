@@ -28,11 +28,11 @@ class Deck(object):
         ''' Initializes the cards in the deck '''
         if cards is None:
             self.cards = []
-            xPos = 0
-            yPos = 0
+            col = 0
+            row = 0
             for i in range(1,(numCards/4 + 1)):
                 for sort in ['H', 'S', 'T', 'L']:
-                    self.cards.append(Card(sort,i, xPos, yPos, "./cards/%s%s.gif" % (i,sort.lower())))
+                    self.cards.append(Card(sort,i, col, row, "./cards/%s%s.gif" % (i,sort.lower())))
         else:
             self.cards = cards
     

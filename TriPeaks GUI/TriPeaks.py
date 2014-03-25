@@ -53,16 +53,24 @@ class TriPeaks(object):
         # Row 0:
         for col in range(0,self.boardCols-1,3):
             self.board[0][col] = self.deck.cards.pop()
+            self.board[0][col].col = col
+            self.board[0][col].row = 0
         # Row 1:
         for col in range(self.boardCols-1):
             if (col%3 != 2):                # TODO: haegt ad gera i einni linu?
                 self.board[1][col] = self.deck.cards.pop()
+                self.board[1][col].col = col
+                self.board[1][col].row = 1
         # Row 2:
         for col in range(self.boardCols-1):
             self.board[2][col] = self.deck.cards.pop()
+            self.board[2][col].col = col
+            self.board[2][col].row = 2
         # Row 3:
         for col in range(self.boardCols):
             self.board[3][col] = self.deck.cards.pop()
+            self.board[3][col].col = col
+            self.board[3][col].row = 3
 
                 
     # Post: returns how many cards are left in the deck
@@ -138,7 +146,7 @@ class TriPeaks(object):
     # Post: removes card from board and returns it
     # Run:  TriPeaks.getBoardCard(cardString)
     def getBoardCard(self, cardString):
-        ''' Finds the card cardString in the board '''
+        ''' Finds the card cardString in the board and moves to the heap '''
         # TODO: laga tetta fall, er bara skitamix
         for i,row in enumerate(self.board):
             for j,c in enumerate(row):
@@ -150,7 +158,21 @@ class TriPeaks(object):
                         return c
                     else:
                         print "\nThis move is not legal, try again!"
+
+    # GKE: 24/03/2014, baetti vid tessu falli, tarf ad skoda betur
+    def moveToHeap(self, card):
+        ''' Moves the card to the heap '''
+        # TODO: laga tetta fall, er bara skitamix
         
+        if (card is not None):
+            if (self.isLegal(card) and self.isMovable(card.row,card.col)):
+                self.board[card.row][card.col] = None
+                self.addScore(150)
+                self.heap.append(card) 
+                return card
+            else:
+                print "\nThis move is not legal, try again!"
+        return
 
     # Pre:  self.deck contains at least one Card object, self.heap is a
     #       list of Card objects
