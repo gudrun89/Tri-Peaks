@@ -16,7 +16,7 @@ class TriPeaksGUI(object):
     GAPSIZE = 10                # Size of gap between cards in pixels
     BOARDCOLS = 10              # Number of columns of cards
     BOARDROWS = 4               # Number of rows of cards
-    BGCOLOR = (0, 150, 0)     # Blue background color
+    BGCOLOR = (0, 150, 0)       # Green background color
 
     def __init__(self):
 
@@ -158,7 +158,7 @@ class TriPeaksGUI(object):
         DISPLAYSURF.blit(cardsleftText, (20, 550))
 
 
-        # Show help if help is "on"
+        # Shows help if help is "on"
         if self.showHelp:
             font = pygame.font.SysFont("comicsansms", 18)
 ##            helpStr = """
@@ -201,7 +201,7 @@ class TriPeaksGUI(object):
                     if self.game.isMovable(row,col):
                         cardImg = pygame.image.load(self.game.board[row][col].img).convert()
                     else:
-                        cardImg = pygame.image.load('panda2.png').convert()
+                        cardImg = pygame.image.load('panda2.png')
                     DISPLAYSURF.blit(cardImg, (self.game.board[row][col].cardx, self.game.board[row][col].cardy))
 
 
