@@ -137,6 +137,12 @@ class TriPeaksGUI(object):
         timeText = font.render(timeStr, True, (0, 0, 0))
         DISPLAYSURF.blit(timeText, (800, 20))
 
+        # Show quit command
+        font = pygame.font.SysFont("comicsansms", 18)
+        quitStr = 'Press ESC to quit'
+        quitText = font.render(quitStr, True, (0, 0, 0))
+        DISPLAYSURF.blit(quitText, (800, 550))
+
         # Shows deck
         if self.game.deckSize() > 0:
             DISPLAYSURF.blit(pygame.image.load('panda.png'), (100, 450))
