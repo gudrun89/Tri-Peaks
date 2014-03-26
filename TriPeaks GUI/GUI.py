@@ -16,12 +16,13 @@ class TriPeaksGUI(object):
     GAPSIZE = 10                # Size of gap between cards in pixels
     BOARDCOLS = 10              # Number of columns of cards
     BOARDROWS = 4               # Number of rows of cards
-    BGCOLOR = (255,255,255)     # White background color
+    BGCOLOR = (0, 150, 0)     # Blue background color
 
     def __init__(self):
 
         self.game = TriPeaks()
         self.selectedCard = None    # The card selected with the mouse
+        self.showHelp = False       # Help instructions shown if True
 
         self.mousex = 0 # x coordinate of mouse event
         self.mousey = 0 # y coordinate of mouse event
@@ -55,6 +56,10 @@ class TriPeaksGUI(object):
                 if event.type == QUIT or (event.type == KEYUP and event.key == K_ESCAPE):
                     pygame.quit()
                     sys.exit()
+
+                # Test: show help
+                if (event.type == KEYUP and event.key == K_F1):
+                    self.showHelp = not self.showHelp
                 # Event when the mouse is moved
                 elif event.type == MOUSEMOTION:
                     self.onMouseMove(event)
@@ -71,6 +76,7 @@ class TriPeaksGUI(object):
             # Redraws the screen and waits a clock tick of one frame rate
             pygame.display.update()
             FPSCLOCK.tick(self.FPS)
+
 
     # Pre:  event is a pygame.event object
     # Post: If a movable card has been selected with the mouse, it follows the mouse motion
@@ -137,20 +143,51 @@ class TriPeaksGUI(object):
         timeText = font.render(timeStr, True, (0, 0, 0))
         DISPLAYSURF.blit(timeText, (800, 20))
 
-        # Show quit command
+        # Show key information
         font = pygame.font.SysFont("comicsansms", 18)
         quitStr = 'Press ESC to quit'
+        helpStr = 'Press F1 to show/hide help'
         quitText = font.render(quitStr, True, (0, 0, 0))
-        DISPLAYSURF.blit(quitText, (800, 550))
-        
-		# shows cards left
-    	cardsleftStr = 'Cards left : ' + str(int(self.game.deckSize()))
+        helpText = font.render(helpStr, True, (0, 0, 0))
+        DISPLAYSURF.blit(quitText, (750, 530))
+        DISPLAYSURF.blit(helpText, (750, 560))
+
+        # shows cards left
+        cardsleftStr = 'Cards left : ' + str(int(self.game.deckSize()))
         cardsleftText = font.render(cardsleftStr, True, (0, 0, 0))
         DISPLAYSURF.blit(cardsleftText, (20, 550))
 
+
+        # Show help if help is "on"
+        if self.showHelp:
+            font = pygame.font.SysFont("comicsansms", 18)
+##            helpStr = """
+##                    TRI-PEAKS RULES:
+##                    The object is to move all the cards from the board
+##                    to the heap. You can move cards with value 1 lower
+##                    or 1 higher than the top card on the heap.
+##                    If you run out of moves you can click on the deck
+##                    to add a card to the heap.
+##                    """
+            helpStr1 = 'TRI-PEAKS RULES:'
+            helpStr2 = 'Move all cards from the board to the heap.'
+            helpStr3 = 'You can move cards with value +/-1 the value'
+            helpStr4 = 'of the top card on the heap. You can also click'
+            helpStr5 = 'on the deck to add a card to the heap.'
+            helpText1 = font.render(helpStr1, True, (0, 0, 0))
+            helpText2 = font.render(helpStr2, True, (0, 0, 0))
+            helpText3 = font.render(helpStr3, True, (0, 0, 0))
+            helpText4 = font.render(helpStr4, True, (0, 0, 0))
+            helpText5 = font.render(helpStr5, True, (0, 0, 0))
+            DISPLAYSURF.blit(helpText1, (600, 400))
+            DISPLAYSURF.blit(helpText2, (600, 420))
+            DISPLAYSURF.blit(helpText3, (600, 440))
+            DISPLAYSURF.blit(helpText4, (600, 460))
+            DISPLAYSURF.blit(helpText5, (600, 480))
+
         # Shows deck
         if self.game.deckSize() > 0:
-            DISPLAYSURF.blit(pygame.image.load('panda.png'), (100, 450))
+            DISPLAYSURF.blit(pygame.image.load('panda2.png'), (100, 450))
 
         # Shows heap
         for (i, card) in enumerate(self.game.heap):
@@ -164,7 +201,7 @@ class TriPeaksGUI(object):
                     if self.game.isMovable(row,col):
                         cardImg = pygame.image.load(self.game.board[row][col].img).convert()
                     else:
-                        cardImg = pygame.image.load('panda.png').convert()
+                        cardImg = pygame.image.load('panda2.png').convert()
                     DISPLAYSURF.blit(cardImg, (self.game.board[row][col].cardx, self.game.board[row][col].cardy))
 
 
