@@ -1,0 +1,121 @@
+\documentclass[12pt]{article}
+%\usepackage[dvips]{epsfig}
+\usepackage{graphicx} 
+\usepackage{epstopdf}
+\usepackage[T1]{fontenc}
+\usepackage{mathtools}
+\usepackage{listings}
+\usepackage{pdfpages}
+\usepackage{multirow}
+\usepackage[icelandic]{babel}
+{\obeyspaces\gdef {\leavevmode\null\enskip\null}}
+\oddsidemargin=0in \evensidemargin=0in
+\textwidth=6.35in
+\headheight=0pt \headsep=0pt \topmargin=0in
+\textheight=9.8in
+\usepackage{tikz}
+\usepgflibrary{shapes}
+\newcommand{\tk}{Ti\textit{k}Z}
+\def\DV{DVIto\kern-.1em VDU}
+
+\DeclareSymbolFont{extraup}{U}{zavm}{m}{n}
+\DeclareMathSymbol{\varheart}{\mathalpha}{extraup}{86}
+\DeclareMathSymbol{\vardiamond}{\mathalpha}{extraup}{87}
+
+\newcommand{\ba}{\begin{array}}
+\newcommand{\ea}{\end{array}}
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\benum}{\begin{enumerate}}
+\newcommand{\eenum}{\end{enumerate}}
+\newcommand{\bfig}{\begin{figure}}
+\newcommand{\efig}{\end{figure}}
+\newcommand{\bi}{\begin{itemize}}
+\newcommand{\ei}{\end{itemize}}
+\newcommand{\bt}{\begin{tabular}}
+\newcommand{\et}{\end{tabular}}
+\newcommand{\qed}{\framebox[2mm]{}}
+
+
+\begin{document}
+\begin{center}
+\textsc{Háskóli Íslands}
+\end{center}
+\vspace*{5cm}
+
+\large {\bf
+\begin{center}
+\noindent\rule{15cm}{0.4pt}
+\textsc{Þróun Hugbúnaðar}\\ \textsc{Hópverkefni 2c}\\ Tri Peaks \\
+\noindent\rule{13cm}{0.4pt} \end{center}}
+\small
+\vspace{5cm}
+\begin{center}
+Ágúst Ingi Skarphéðinsson\\Guðrún Kristín Einarsdóttir\\Kári Ragnarsson\\Priyaphon Kaengjaroenkasikorn\\ Valur 
+Sigurbjörn Pálmarsson
+\end{center}
+\vspace{5cm}
+\begin{center}
+\today
+\end{center} 
+
+\newpage \normalsize 
+\newpage
+
+\section{Áætlun}
+Hér á mynd 1 má sjá þær notendasögur áætlað var að framkvæma í ítrun 2.
+
+\begin{figure}[!ht]
+  \centering
+    \includegraphics[width=0.9\textwidth]{verkaaetlun.png}
+    \caption{Notendasögur fyrir ítrun 2}
+\end{figure}
+
+Allar þessar notendasögur hafa verið útfærðar í nýjustu útgáfu leiksins nema fallið sem segir notanda hvort hann hafi unnið eða tapað leiknum og notendasagan um að geta hafið nýjan leik upp á nýtt. Ekki náðist að útfæra þær notendasögu en í staðin var framkvæmd notendasaga sem var sett fyrir næstu ítrun að bitra reglur leiksins. En þrátt fyrir að þessar notendasögur hafi ekki verið kláraðar eru þær í vinnslu og langt komnar. Notendaviðmót leiksins er langt á veg komið og er helsta virkni kapalsins komin. Hægt er að draga nýtt spil úr stokknum með því að klikka á stokkinn og draga spil úr borði í hrúgu. Einnig er hægt að hefja nýjan leik þegar maður vill og leikurinn segir þér hvort þú hafir unnið eða tapað. Að lokum birtir leikurinn stigafjölda spilara, fjölda 'moves' og tímann sem spilari hefur spilað.
+
+\newpage
+\section{Verkþættir}
+Hér eru notendasögurnar sundurliðaðar og útbúnir verkþættir sem útfærðir voru í ítrun 2.
+
+\subsubsection*{Draga spil úr stokki}
+\begin{itemize}
+\item Fall sem teiknar upp spil á notendaviðmót
+\item Fall sem les hvar músin smellir
+\item Aðgerð sem tekur spil úr stokki og sendir í hrúgu
+\end{itemize}
+
+\subsubsection*{Draga spil úr borði í hrúgu}
+\begin{itemize}
+\item Fall sem athugar hvort músarhnappur sé niðri
+\item Fall sem eltir staðsetningu músar þegar hnappur er niðri
+\item Fall sem athugar hvort það megi færa viðkomandi spil
+\item Fall sem teiknar spil eftir staðsetningu músarbendilsins
+\end{itemize}
+
+\subsubsection*{Sjá reglur leiksins}
+\begin{itemize}
+\item Fall sem skrifar á skjá reglur leiksins
+\end{itemize}
+
+\subsubsection*{Sýna stig í leiknum}
+\begin{itemize}
+\item Fall sem heldur utan um stig spilara
+\item Prentar út stig spilara á skjá
+\end{itemize}
+
+\subsubsection*{Sýna tíma í leiknum}
+\begin{itemize}
+\item Fall sem tekur tíma leiks
+\item Prentar út tíma leiks á skjá
+\end{itemize}
+
+\subsubsection*{Sýna fjölda 'moves' sem notandi hefur notað}
+\begin{itemize}
+\item Fall sem telur 'moves' spilara
+\item Prentar út 'moves' spilara á skjá
+\end{itemize}
+
+\subsubsection*{Annað}
+Það sem mætti bæta við þetta er að útbúið að notendaviðmót og spil teiknuð inn á það. Notendaviðmótið tekur við músasmellum og 'input' frá tökkum.
+
+\end{document}
