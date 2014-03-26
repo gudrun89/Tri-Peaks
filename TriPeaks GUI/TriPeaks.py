@@ -168,6 +168,7 @@ class TriPeaks(object):
             if (self.isLegal(card) and self.isMovable(card.row,card.col)):
                 self.board[card.row][card.col] = None
                 self.addScore(150)
+                self.moves += 1         # GKE: baetti vid tessu
                 self.heap.append(card) 
                 return card
             else:

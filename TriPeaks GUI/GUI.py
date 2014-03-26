@@ -65,6 +65,8 @@ class TriPeaksGUI(object):
                 elif event.type == MOUSEBUTTONUP:
                     self.onMouseReleased(event)
 
+            # Calculates the time elapsed
+            self.game.elapsedTime()
                 
             # Redraws the screen and waits a clock tick of one frame rate
             pygame.display.update()
@@ -118,6 +120,22 @@ class TriPeaksGUI(object):
     # Post: The game board has been drawn
     # Run:  TriPeaksGUI.drawBoard()
     def drawBoard(self):
+
+        # Shows game score
+        font = pygame.font.SysFont("comicsansms", 32)
+        scoreStr = 'Score: ' + str(self.game.score)
+        scoreText = font.render(scoreStr, True, (0, 0, 0))
+        DISPLAYSURF.blit(scoreText, (20, 20))
+
+        # Shows player moves
+        moveStr = 'Moves: ' + str(self.game.moves)
+        moveText = font.render(moveStr, True, (0, 0, 0))
+        DISPLAYSURF.blit(moveText, (400, 20))
+
+        # Shows game time elapsed
+        timeStr = 'Time : ' + str(int(self.game.finaltime))
+        timeText = font.render(timeStr, True, (0, 0, 0))
+        DISPLAYSURF.blit(timeText, (800, 20))
 
         # Shows deck
         if self.game.deckSize() > 0:
