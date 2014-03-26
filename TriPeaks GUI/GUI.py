@@ -142,6 +142,11 @@ class TriPeaksGUI(object):
         quitStr = 'Press ESC to quit'
         quitText = font.render(quitStr, True, (0, 0, 0))
         DISPLAYSURF.blit(quitText, (800, 550))
+        
+		# shows cards left
+    	cardsleftStr = 'Cards left : ' + str(int(self.game.deckSize()))
+        cardsleftText = font.render(cardsleftStr, True, (0, 0, 0))
+        DISPLAYSURF.blit(cardsleftText, (20, 550))
 
         # Shows deck
         if self.game.deckSize() > 0:
