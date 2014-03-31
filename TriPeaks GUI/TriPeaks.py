@@ -203,7 +203,8 @@ class TriPeaks(object):
     # Run:  TriPeaks.elapsedTime
     def elapsedTime(self):
         ''' Measures the time elapsed since the game started '''
-        self.finaltime = time.time() - self.start_time
+        if self.isPlaying:
+            self.finaltime = time.time() - self.start_time
     
 
     # Post: returns true if the game is won, false otherwise
