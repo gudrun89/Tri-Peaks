@@ -52,6 +52,9 @@ class TriPeaksGUI(object):
                 if event.type == KEYUP and event.key == K_r:
                     self.restartGame()
 
+                if event.type == KEYUP and event.key == K_h:
+                    self.showHints = not self.showHints
+
                 # Test: show help
                 if event.type == KEYUP and event.key == K_F1:
                     self.showHelp = not self.showHelp
@@ -70,6 +73,7 @@ class TriPeaksGUI(object):
 
             self.game.elapsedTime()
             self.animateCard()
+            self.animateDeckToHeap()
 
             if self.game.isPlaying:
                 self.isGameOver()
@@ -108,7 +112,8 @@ class TriPeaksGUI(object):
         if card is not None and self.game.isMovable(card.row, card.col):
             self.selectedCard = self.posToCard(*event.pos)
         elif self.deckRect.collidepoint(*event.pos):
-            self.game.toHeap()
+            self.deckToHeapCard = self.game.deck.cards[-1]
+            print self.deckToHeapCard
 
     # Pre:  event is a pygame.event object
     # Post: If a legal card was selected then it moves to the heap if it collides with the heap card,
@@ -125,7 +130,6 @@ class TriPeaksGUI(object):
                 self.selectedCard.moveTo(x,y)
             self.selectedCard = None
 
-
     def animateCard(self):
         if self.animationCard is None:
             return
@@ -137,6 +141,20 @@ class TriPeaksGUI(object):
             self.game.moveToHeap(self.animationCard)
             self.animationCard = None
 
+
+    def animateDeckToHeap(self):
+        if self.deckToHeapCard is None:
+            return
+        dx = self.heapRect.x - self.deckToHeapCard.cardx
+        dy = self.heapRect.y - self.deckToHeapCard.cardy
+        distSq = dx**2 + dy**2
+        self.deckToHeapCard.moveTo(self.deckToHeapCard.cardx + dx/2.0, self.deckToHeapCard.cardy + dy/2.0)
+        cardImg = pygame.image.load(self.deckToHeapCard.img)
+        DISPLAYSURF.blit(cardImg, (self.deckToHeapCard.cardx, self.deckToHeapCard.cardy))
+        print dx, dy
+        if distSq < 1:
+            self.game.toHeap()
+            self.deckToHeapCard = None
 
 
     def isGameOver(self):
@@ -161,9 +179,11 @@ class TriPeaksGUI(object):
         self.hasLost = False
         self.selectedCard = None        # The card selected with the mouse
         self.showHelp = False           # Help instructions shown if True
+        self.showHints = False          # Legal cards shown if True
         self.lastClickTime = 0.0        # The time of last mouse click
         self.doubleClickInterval = 0.3  # The threshold interval between clicks in double mouse click
         self.animationCard = None       # Card that is moving to the heap
+        self.deckToHeapCard = None      # Card that is moving from deck to heap
 
         self.mousex = 0 # x coordinate of mouse event
         self.mousey = 0 # y coordinate of mouse event
@@ -172,9 +192,6 @@ class TriPeaksGUI(object):
         self.deckRect = pygame.Rect(100, 450, self.CARDWIDTH, self.CARDHEIGHT)  # Rectangle around the deck cards
         
         self.initCardsPos()
-
-
-
 
 
     # Pre:  A TriPeaksGUI object has been created
@@ -188,6 +205,10 @@ class TriPeaksGUI(object):
                     self.game.board[row][col].cardx = self.startx + col*(self.CARDWIDTH+self.GAPSIZE) + (3-row)*self.GAPSIZE*4
                     self.game.board[row][col].cardy = self.starty + row*(0.6*self.CARDHEIGHT)
 
+        for card in self.game.deck.cards:
+            card.cardx = self.deckRect.x
+            card.cardy = self.deckRect.y
+        
     # Pre:  A TriPeaksGUI object has been created
     # Post: The game board has been drawn
     # Run:  TriPeaksGUI.drawBoard()
@@ -214,19 +235,21 @@ class TriPeaksGUI(object):
         restartStr = 'Press R to restart'
         quitStr = 'Press ESC to quit'
         helpStr = 'Press F1 to show/hide help'
+        hintStr = 'Press H to show/hide legal cards'
         restartText = font.render(restartStr, True, (0, 0, 0))
         quitText = font.render(quitStr, True, (0, 0, 0))
         helpText = font.render(helpStr, True, (0, 0, 0))
-        DISPLAYSURF.blit(restartText, (750, 500))
-        DISPLAYSURF.blit(quitText, (750, 530))
-        DISPLAYSURF.blit(helpText, (750, 560))
+        hintText = font.render(hintStr, True, (0, 0, 0))
+        DISPLAYSURF.blit(restartText, (710, 510))
+        DISPLAYSURF.blit(quitText, (710, 530))
+        DISPLAYSURF.blit(helpText, (710, 550))
+        DISPLAYSURF.blit(hintText, (710, 570))
 
         # shows cards left
         cardsleftStr = 'Cards left : ' + str(int(self.game.deckSize()))
         cardsleftText = font.render(cardsleftStr, True, (0, 0, 0))
         DISPLAYSURF.blit(cardsleftText, (20, 550))
 
-        
         # Shows help if help is "on"
         if self.showHelp:
             font = pygame.font.SysFont("comicsansms", 18)
@@ -261,17 +284,25 @@ class TriPeaksGUI(object):
         # Shows heap
         for (i, card) in enumerate(self.game.heap):
             cardImg = pygame.image.load(card.img)
-            DISPLAYSURF.blit(cardImg, (400, 450))
+            if not self.game.isPlaying:
+                DISPLAYSURF.blit(cardImg, (400, 450), special_flags = BLEND_MULT)
+            else:
+                DISPLAYSURF.blit(cardImg, (400, 450))
         
         # Shows cards in board
         for row in range(self.BOARDROWS):
             for col in range(self.BOARDCOLS):
                 if self.game.board[row][col] is not None:
                     if self.game.isMovable(row,col):
-                        cardImg = pygame.image.load(self.game.board[row][col].img).convert()
+                        cardImg = pygame.image.load(self.game.board[row][col].img)
                     else:
                         cardImg = pygame.image.load('panda2.png')
-                    DISPLAYSURF.blit(cardImg, (self.game.board[row][col].cardx, self.game.board[row][col].cardy))
+                    if not self.game.isPlaying:
+                        DISPLAYSURF.blit(cardImg, (self.game.board[row][col].cardx, self.game.board[row][col].cardy), special_flags = BLEND_MULT)
+                    elif self.showHints and self.game.isMovable(row,col) and not self.game.isLegal(self.game.board[row][col]):
+                        DISPLAYSURF.blit(cardImg, (self.game.board[row][col].cardx, self.game.board[row][col].cardy), special_flags = BLEND_MULT)
+                    else:
+                        DISPLAYSURF.blit(cardImg, (self.game.board[row][col].cardx, self.game.board[row][col].cardy))
 
 
         # Winning message
@@ -284,9 +315,13 @@ class TriPeaksGUI(object):
         # Losing message
         if self.hasLost:
             font = pygame.font.SysFont("comicsansms", 70)
+            font2 = pygame.font.SysFont("comicsansms", 50)
             loseStr = 'YOU LOST!!!'
+            againStr = 'Press R to start a new game'
             loseText = font.render(loseStr, True, (255,0,0))
+            againText = font2.render(againStr, True, (255,0,0))
             DISPLAYSURF.blit(loseText, (300, 200))
+            DISPLAYSURF.blit(againText, (200, 270))
 
 
     # Pre:  row and col are integers
