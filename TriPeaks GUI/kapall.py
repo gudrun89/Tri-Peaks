@@ -19,9 +19,12 @@ class TriPeaksGUI(object):
     BOARDROWS = 4               # Number of rows of cards
     BGCOLOR = (0, 150, 0)       # Green background color
 
+    
+
     def __init__(self):
-        self.setupGame()
         pygame.init()
+        self.setupGame()
+        
         
     # Pre:  A TriPeaksGUI object has been created
     # Post: The main game function is running until the game is stopped
@@ -91,6 +94,7 @@ class TriPeaksGUI(object):
             return
         if self.game.isLegal(card):
             self.animationCard = card
+            self.cardSound.play()
             
 
     # Pre:  event is a pygame.event object
@@ -111,9 +115,8 @@ class TriPeaksGUI(object):
         card = self.posToCard(*event.pos)
         if card is not None and self.game.isMovable(card.row, card.col):
             self.selectedCard = self.posToCard(*event.pos)
-        elif self.deckRect.collidepoint(*event.pos):
+        elif self.deckRect.collidepoint(*event.pos) and len(self.game.deck.cards) > 0:
             self.deckToHeapCard = self.game.deck.cards[-1]
-            print self.deckToHeapCard
 
     # Pre:  event is a pygame.event object
     # Post: If a legal card was selected then it moves to the heap if it collides with the heap card,
@@ -151,7 +154,6 @@ class TriPeaksGUI(object):
         self.deckToHeapCard.moveTo(self.deckToHeapCard.cardx + dx/2.0, self.deckToHeapCard.cardy + dy/2.0)
         cardImg = pygame.image.load(self.deckToHeapCard.img)
         DISPLAYSURF.blit(cardImg, (self.deckToHeapCard.cardx, self.deckToHeapCard.cardy))
-        print dx, dy
         if distSq < 1:
             self.game.toHeap()
             self.deckToHeapCard = None
@@ -163,13 +165,15 @@ class TriPeaksGUI(object):
             self.hasWon = True
             print 'Has won'
             
-        if self.game.hasLost():
+        elif self.game.hasLost():
             self.game.isPlaying = False
             self.hasLost = True
             print 'Has lost'
+            self.sadLoseSound.play()
 
 
     def restartGame(self):
+        pygame.mixer.stop()
         self.setupGame()
 
 
@@ -192,6 +196,10 @@ class TriPeaksGUI(object):
         self.deckRect = pygame.Rect(100, 450, self.CARDWIDTH, self.CARDHEIGHT)  # Rectangle around the deck cards
         
         self.initCardsPos()
+
+        self.cardSound = pygame.mixer.Sound("card.wav")
+        self.sweepSound = pygame.mixer.Sound("sweep.wav")
+        self.sadLoseSound = pygame.mixer.Sound("sadLose.wav")
 
 
     # Pre:  A TriPeaksGUI object has been created
