@@ -19,7 +19,6 @@ class TriPeaksGUI(object):
     BOARDROWS = 4               # Number of rows of cards
     BGCOLOR = (0, 150, 0)       # Green background color
 
-    
 
     def __init__(self):
         pygame.init()
@@ -44,6 +43,7 @@ class TriPeaksGUI(object):
         while True: 
             
             DISPLAYSURF.fill(self.BGCOLOR)      # Draws the window
+            DISPLAYSURF.blit(self.backgroundImg, (0,0))
             self.drawBoard()                    # Draws the game board
 
             # Event handling loop
@@ -73,6 +73,7 @@ class TriPeaksGUI(object):
                 # Event when the mouse button has been released
                 elif event.type == MOUSEBUTTONUP:
                     self.onMouseReleased(event)
+
 
             self.game.elapsedTime()
             self.animateCard()
@@ -117,6 +118,7 @@ class TriPeaksGUI(object):
             self.selectedCard = self.posToCard(*event.pos)
         elif self.deckRect.collidepoint(*event.pos) and len(self.game.deck.cards) > 0:
             self.deckToHeapCard = self.game.deck.cards[-1]
+            self.cardSound.play()
 
     # Pre:  event is a pygame.event object
     # Post: If a legal card was selected then it moves to the heap if it collides with the heap card,
@@ -158,17 +160,14 @@ class TriPeaksGUI(object):
             self.game.toHeap()
             self.deckToHeapCard = None
 
-
     def isGameOver(self):
         if self.game.hasWon():
             self.game.isPlaying = False
             self.hasWon = True
-            print 'Has won'
             
         elif self.game.hasLost():
             self.game.isPlaying = False
             self.hasLost = True
-            print 'Has lost'
             self.sadLoseSound.play()
 
 
@@ -197,9 +196,11 @@ class TriPeaksGUI(object):
         
         self.initCardsPos()
 
-        self.cardSound = pygame.mixer.Sound("card.wav")
+        self.cardSound = pygame.mixer.Sound("card2.wav")
         self.sweepSound = pygame.mixer.Sound("sweep.wav")
         self.sadLoseSound = pygame.mixer.Sound("sadLose.wav")
+
+        self.backgroundImg = pygame.image.load('woodBackground.jpg')
 
 
     # Pre:  A TriPeaksGUI object has been created
@@ -225,17 +226,17 @@ class TriPeaksGUI(object):
         # Shows game score
         font = pygame.font.SysFont("comicsansms", 32)
         scoreStr = 'Score: ' + str(self.game.score)
-        scoreText = font.render(scoreStr, True, (0, 0, 0))
+        scoreText = font.render(scoreStr, True, (255, 255, 255))
         DISPLAYSURF.blit(scoreText, (20, 20))
 
         # Shows player moves
         moveStr = 'Moves: ' + str(self.game.moves)
-        moveText = font.render(moveStr, True, (0, 0, 0))
+        moveText = font.render(moveStr, True, (255, 255, 255))
         DISPLAYSURF.blit(moveText, (400, 20))
 
         # Shows game time elapsed
         timeStr = 'Time : ' + str(int(self.game.finaltime))
-        timeText = font.render(timeStr, True, (0, 0, 0))
+        timeText = font.render(timeStr, True, (255, 255, 255))
         DISPLAYSURF.blit(timeText, (800, 20))
 
         # Show key information
@@ -244,10 +245,10 @@ class TriPeaksGUI(object):
         quitStr = 'Press ESC to quit'
         helpStr = 'Press F1 to show/hide help'
         hintStr = 'Press H to show/hide legal cards'
-        restartText = font.render(restartStr, True, (0, 0, 0))
-        quitText = font.render(quitStr, True, (0, 0, 0))
-        helpText = font.render(helpStr, True, (0, 0, 0))
-        hintText = font.render(hintStr, True, (0, 0, 0))
+        restartText = font.render(restartStr, True, (255, 255, 255))
+        quitText = font.render(quitStr, True, (255, 255, 255))
+        helpText = font.render(helpStr, True, (255, 255, 255))
+        hintText = font.render(hintStr, True, (255, 255, 255))
         DISPLAYSURF.blit(restartText, (710, 510))
         DISPLAYSURF.blit(quitText, (710, 530))
         DISPLAYSURF.blit(helpText, (710, 550))
@@ -255,30 +256,22 @@ class TriPeaksGUI(object):
 
         # shows cards left
         cardsleftStr = 'Cards left : ' + str(int(self.game.deckSize()))
-        cardsleftText = font.render(cardsleftStr, True, (0, 0, 0))
+        cardsleftText = font.render(cardsleftStr, True, (255, 255, 255))
         DISPLAYSURF.blit(cardsleftText, (20, 550))
 
         # Shows help if help is "on"
         if self.showHelp:
             font = pygame.font.SysFont("comicsansms", 18)
-##            helpStr = """
-##                    TRI-PEAKS RULES:
-##                    The object is to move all the cards from the board
-##                    to the heap. You can move cards with value 1 lower
-##                    or 1 higher than the top card on the heap.
-##                    If you run out of moves you can click on the deck
-##                    to add a card to the heap.
-##                    """
             helpStr1 = 'TRI-PEAKS RULES:'
             helpStr2 = 'Move all cards from the board to the heap.'
             helpStr3 = 'You can move cards with value +/-1 the value'
             helpStr4 = 'of the top card on the heap. You can also click'
             helpStr5 = 'on the deck to add a card to the heap.'
-            helpText1 = font.render(helpStr1, True, (0, 0, 0))
-            helpText2 = font.render(helpStr2, True, (0, 0, 0))
-            helpText3 = font.render(helpStr3, True, (0, 0, 0))
-            helpText4 = font.render(helpStr4, True, (0, 0, 0))
-            helpText5 = font.render(helpStr5, True, (0, 0, 0))
+            helpText1 = font.render(helpStr1, True, (255, 255, 255))
+            helpText2 = font.render(helpStr2, True, (255, 255, 255))
+            helpText3 = font.render(helpStr3, True, (255, 255, 255))
+            helpText4 = font.render(helpStr4, True, (255, 255, 255))
+            helpText5 = font.render(helpStr5, True, (255, 255, 255))
             DISPLAYSURF.blit(helpText1, (600, 400))
             DISPLAYSURF.blit(helpText2, (600, 420))
             DISPLAYSURF.blit(helpText3, (600, 440))
