@@ -2,6 +2,7 @@ import random, pygame, sys
 from pygame.locals import *
 from TriPeaks import *
 from time import time
+from collections import deque
 
 class TriPeaksGUI(object):
 
@@ -77,7 +78,7 @@ class TriPeaksGUI(object):
 
             self.game.elapsedTime()
             self.animateCard()
-            self.animateDeckToHeap()
+            #self.animateDeckToHeap()
 
             if self.game.isPlaying:
                 self.isGameOver()
@@ -94,7 +95,7 @@ class TriPeaksGUI(object):
         if card is None or not self.game.isMovable(card.row, card.col):
             return
         if self.game.isLegal(card):
-            self.animationCard = card
+            self.animationQueue.append((card, (self.heapRect.x, self.heapRect.y), lambda: self.game.moveToHeap(card)))
             self.cardSound.play()
             
 
@@ -117,7 +118,8 @@ class TriPeaksGUI(object):
         if card is not None and self.game.isMovable(card.row, card.col):
             self.selectedCard = self.posToCard(*event.pos)
         elif self.deckRect.collidepoint(*event.pos) and len(self.game.deck.cards) > 0:
-            self.deckToHeapCard = self.game.deck.cards[-1]
+            self.animationQueue.append((self.game.deck.cards[-1], (self.heapRect.x, self.heapRect.y), lambda: self.game.toHeap()))
+            #self.deckToHeapCard = self.game.deck.cards[-1]
             self.cardSound.play()
 
     # Pre:  event is a pygame.event object
@@ -135,30 +137,20 @@ class TriPeaksGUI(object):
                 self.selectedCard.moveTo(x,y)
             self.selectedCard = None
 
+
     def animateCard(self):
-        if self.animationCard is None:
+        if len(self.animationQueue) == 0:
             return
-        dx = self.heapRect.x - self.animationCard.cardx
-        dy = self.heapRect.y - self.animationCard.cardy
-        distSq = dx**2 + dy**2
-        self.animationCard.moveTo(self.animationCard.cardx + dx/2.0, self.animationCard.cardy + dy/2.0)
-        if distSq < 1:
-            self.game.moveToHeap(self.animationCard)
-            self.animationCard = None
-
-
-    def animateDeckToHeap(self):
-        if self.deckToHeapCard is None:
-            return
-        dx = self.heapRect.x - self.deckToHeapCard.cardx
-        dy = self.heapRect.y - self.deckToHeapCard.cardy
-        distSq = dx**2 + dy**2
-        self.deckToHeapCard.moveTo(self.deckToHeapCard.cardx + dx/2.0, self.deckToHeapCard.cardy + dy/2.0)
-        cardImg = pygame.image.load(self.deckToHeapCard.img)
-        DISPLAYSURF.blit(cardImg, (self.deckToHeapCard.cardx, self.deckToHeapCard.cardy))
-        if distSq < 1:
-            self.game.toHeap()
-            self.deckToHeapCard = None
+        for i,triple in enumerate(self.animationQueue):
+            card,dest,callback = triple
+            dx = dest[0] - card.cardx
+            dy = dest[1] - card.cardy
+            distSq = dx**2 + dy**2
+            card.moveTo(card.cardx + dx/2.0, card.cardy + dy/2.0)
+            if distSq < 1:
+                callback()
+                del(self.animationQueue[i])
+              
 
     def isGameOver(self):
         if self.game.hasWon():
@@ -185,8 +177,8 @@ class TriPeaksGUI(object):
         self.showHints = False          # Legal cards shown if True
         self.lastClickTime = 0.0        # The time of last mouse click
         self.doubleClickInterval = 0.3  # The threshold interval between clicks in double mouse click
-        self.animationCard = None       # Card that is moving to the heap
-        self.deckToHeapCard = None      # Card that is moving from deck to heap
+        self.animationQueue = []        # Cards that are moving
+        self.waitingQueue = deque()     # Cards waiting to be moved
 
         self.mousex = 0 # x coordinate of mouse event
         self.mousey = 0 # y coordinate of mouse event
@@ -207,13 +199,19 @@ class TriPeaksGUI(object):
     # Post: The cards in the board are assigned their positions 
     # Run:  TriPeaksGUI.initCardsPos()
     def initCardsPos(self):
-        # set initial card positions
         for row in range(self.BOARDROWS):
             for col in range(self.BOARDCOLS):
                 if self.game.board[row][col] is not None:
-                    self.game.board[row][col].cardx = self.startx + col*(self.CARDWIDTH+self.GAPSIZE) + (3-row)*self.GAPSIZE*4
-                    self.game.board[row][col].cardy = self.starty + row*(0.6*self.CARDHEIGHT)
-
+                    card = self.game.board[row][col]
+                    destx = self.startx + col*(self.CARDWIDTH+self.GAPSIZE) + (3-row)*self.GAPSIZE*4
+                    desty = self.starty + row*(0.6*self.CARDHEIGHT)
+                    card.cardx = self.deckRect.x
+                    card.cardy = self.deckRect.y
+                    self.waitingQueue.append((card, (destx,desty), lambda: self.animationQueue.append(self.waitingQueue.popleft())))
+        
+        self.waitingQueue[-1] = self.waitingQueue[-1][:2] + (lambda: None,)
+        self.animationQueue.append(self.waitingQueue.popleft())
+        
         for card in self.game.deck.cards:
             card.cardx = self.deckRect.x
             card.cardy = self.deckRect.y
@@ -278,9 +276,8 @@ class TriPeaksGUI(object):
             DISPLAYSURF.blit(helpText4, (600, 460))
             DISPLAYSURF.blit(helpText5, (600, 480))
 
-        # Shows deck
-        if self.game.deckSize() > 0:
-            DISPLAYSURF.blit(pygame.image.load('panda2.png'), (100, 450))
+
+        
 
         # Shows heap
         for (i, card) in enumerate(self.game.heap):
@@ -289,6 +286,13 @@ class TriPeaksGUI(object):
                 DISPLAYSURF.blit(cardImg, (400, 450), special_flags = BLEND_MULT)
             else:
                 DISPLAYSURF.blit(cardImg, (400, 450))
+
+
+        # Show animated cards
+        for triple in self.animationQueue:
+            cardImg = pygame.image.load(triple[0].img)
+            DISPLAYSURF.blit(cardImg, (triple[0].cardx, triple[0].cardy))
+            
         
         # Shows cards in board
         for row in range(self.BOARDROWS):
@@ -305,6 +309,9 @@ class TriPeaksGUI(object):
                     else:
                         DISPLAYSURF.blit(cardImg, (self.game.board[row][col].cardx, self.game.board[row][col].cardy))
 
+        # Shows deck
+        if self.game.deckSize() > 0:
+            DISPLAYSURF.blit(pygame.image.load('panda2.png'), (100, 450))
 
         # Winning message
         if self.hasWon:
