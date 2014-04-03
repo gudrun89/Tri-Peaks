@@ -184,7 +184,7 @@ class TriPeaksGUI(object):
         self.heapRect = pygame.Rect(400, 450, self.CARDWIDTH, self.CARDHEIGHT)  # Rectangle around the heap cards
         self.deckRect = pygame.Rect(100, 450, self.CARDWIDTH, self.CARDHEIGHT)  # Rectangle around the deck cards
         
-        self.cardSound = pygame.mixer.Sound("card2.wav")
+        self.cardSound = pygame.mixer.Sound("deal.wav")
         self.sweepSound = pygame.mixer.Sound("sweep.wav")
         self.sadLoseSound = pygame.mixer.Sound("sadLose.wav")
         self.rockyWinSound = pygame.mixer.Sound("rocky.wav")
@@ -207,7 +207,7 @@ class TriPeaksGUI(object):
                     desty = self.starty + row*(0.6*self.CARDHEIGHT)
                     card.cardx = self.deckRect.x
                     card.cardy = self.deckRect.y
-                    self.waitingQueue.append((card, (destx,desty), lambda: self.animationQueue.append(self.waitingQueue.popleft())))
+                    self.waitingQueue.append( (card, (destx,desty), lambda: self.dealCard()) )
         
         self.waitingQueue[-1] = self.waitingQueue[-1][:2] + (lambda: None,)
         self.animationQueue.append(self.waitingQueue.popleft())
@@ -215,6 +215,11 @@ class TriPeaksGUI(object):
         for card in self.game.deck.cards:
             card.cardx = self.deckRect.x
             card.cardy = self.deckRect.y
+
+
+    def dealCard(self):
+        self.cardSound.play()
+        self.animationQueue.append(self.waitingQueue.popleft())
         
     # Pre:  A TriPeaksGUI object has been created
     # Post: The game board has been drawn
