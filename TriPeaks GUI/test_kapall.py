@@ -2,27 +2,30 @@ import unittest
 from Card import *
 from Deck import *
 from TriPeaks import*
+from kapall import*
 
 class Test(unittest.TestCase):
+
 	def test_Card1(self):
 		#make sure that cards are different
 		t1 = Card('H',10, 0, 0, '')
 		t2 = Card('H',11, 0, 0, '')
 		self.assertNotEqual(t1,t2)
-		
+
 	def test_Card2(self):
 		#Make sure that __eq__ that checks if cards are teh same, works
 		t1 = Card('H',10, 0, 0, '')
 		t2 = Card('H',11, 0, 0, '')
 		t4 = t1.__eq__(t2)
 		self.assertEqual(t4,False)
-		
+
 	def test_Card3(self):
 		#same
 		t1 = Card('H',11, 0, 0, '')
 		t2 = Card('H',11, 0, 0, '')
 		t4 = t1.__eq__(t2)
 		self.assertEqual(t4,True)
+
 		
 
 	def test_shuffleCard(self):
@@ -60,6 +63,19 @@ class Test(unittest.TestCase):
 		t1 = TriPeaks()
 		time = t1.elapsedTime
 		self.assertGreater(time, 0)
+		
+	def test_Moves(self):
+		#makes sure moves is 0 at start
+		t1 = TriPeaks()
+		self.assertEqual(t1.moves,0) 	
+		
+	def test_isMovable(self):
+		#checks if isMovable works, that is if a card is Movable from 'pyramid'
+		t1 = TriPeaks()
+		t2 = t1.isMovable(3,3)
+		self.assertEqual(t2,True)
+		
+
 		
 
 		
