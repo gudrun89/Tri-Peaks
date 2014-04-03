@@ -18,12 +18,10 @@ class TriPeaksGUI(object):
     GAPSIZE = 10                # Size of gap between cards in pixels
     BOARDCOLS = 10              # Number of columns of cards
     BOARDROWS = 4               # Number of rows of cards
-    BGCOLOR = (0, 150, 0)       # Green background color
 
     def __init__(self):
         pygame.init()
         self.setupGame()
-        
         
     # Pre:  A TriPeaksGUI object has been created
     # Post: The main game function is running until the game is stopped
@@ -36,13 +34,10 @@ class TriPeaksGUI(object):
         DISPLAYSURF = pygame.display.set_mode((self.WINDOWWIDTH, self.WINDOWHEIGHT))        # The game display surface
 
         pygame.display.set_caption('Tri Peaks')     # Window title
-        
-        DISPLAYSURF.fill(self.BGCOLOR)  # Sets the background color
  
         # Main game loop
         while True: 
             
-            DISPLAYSURF.fill(self.BGCOLOR)      # Draws the window
             DISPLAYSURF.blit(self.backgroundImg, (0,0))
             self.drawBoard()                    # Draws the game board
 
@@ -77,7 +72,6 @@ class TriPeaksGUI(object):
 
             self.game.elapsedTime()
             self.animateCard()
-            #self.animateDeckToHeap()
 
             if self.game.isPlaying:
                 self.isGameOver()
@@ -170,22 +164,22 @@ class TriPeaksGUI(object):
 
     def setupGame(self):
         self.game = TriPeaks()
+        
         self.hasWon = False
         self.hasLost = False
-        self.selectedCard = None        # The card selected with the mouse
         self.showHelp = False           # Help instructions shown if True
         self.showHints = False          # Legal cards shown if True
+        self.selectedCard = None        # The card selected with the mouse
         self.lastClickTime = 0.0        # The time of last mouse click
         self.doubleClickInterval = 0.3  # The threshold interval between clicks in double mouse click
         self.animationQueue = []        # Cards that are moving
         self.waitingQueue = deque()     # Cards waiting to be moved
 
-        self.mousex = 0 # x coordinate of mouse event
-        self.mousey = 0 # y coordinate of mouse event
+        self.mousex = 0                 # x coordinate of mouse event
+        self.mousey = 0                 # y coordinate of mouse event
 
-
-        self.startx = 100                # Start drawing the board cards at this point
-        self.starty = 100                # Start drawing the board cards at this point
+        self.startx = 100               # Start drawing the board cards at this point
+        self.starty = 100               # Start drawing the board cards at this point
         
         self.heapRect = pygame.Rect(400, 450, self.CARDWIDTH, self.CARDHEIGHT)  # Rectangle around the heap cards
         self.deckRect = pygame.Rect(100, 450, self.CARDWIDTH, self.CARDHEIGHT)  # Rectangle around the deck cards
@@ -243,7 +237,7 @@ class TriPeaksGUI(object):
         timeText = font.render(timeStr, True, (255, 255, 255))
         DISPLAYSURF.blit(timeText, (800, 20))
 
-        # Show key information
+        # Shows key information
         font = pygame.font.SysFont("comicsansms", 18)
         restartStr = 'Press R to restart'
         quitStr = 'Press ESC to quit'
@@ -282,9 +276,6 @@ class TriPeaksGUI(object):
             DISPLAYSURF.blit(helpText4, (600, 460))
             DISPLAYSURF.blit(helpText5, (600, 480))
 
-
-        
-
         # Shows heap
         for (i, card) in enumerate(self.game.heap):
             cardImg = pygame.image.load(card.img)
@@ -294,7 +285,7 @@ class TriPeaksGUI(object):
                 DISPLAYSURF.blit(cardImg, (400, 450))
 
 
-        # Show animated cards
+        # Shows animated cards
         for triple in self.animationQueue:
             cardImg = pygame.image.load(triple[0].img)
             DISPLAYSURF.blit(cardImg, (triple[0].cardx, triple[0].cardy))
