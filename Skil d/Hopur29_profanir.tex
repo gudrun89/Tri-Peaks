@@ -1,0 +1,183 @@
+% A basic LaTeX document for an assignment
+
+% If you want the title to appear on a separate
+% page, change notitlepage to titlepage
+\documentclass[11pt,a4paper,titlepage]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+% If your hand-in is in icelandic change english to icelandic
+% Note: This has nothing to do with Icelandic characters, they
+% can always be used. This just tells other packages what 
+% language you are using and changes the hyphenation used by LaTeX
+% If icelandic is selected, a shorthand, "` and "', is also included
+% for Icelandic quotation marks. They can also obtained by using 
+% ,, and ``
+\usepackage[icelandic]{babel}
+\usepackage{amsmath, amsthm, amssymb, amsfonts}
+\usepackage{graphicx}
+\usepackage{enumerate}
+% To use the whole A4-page
+% See: ftp://ftp.tex.ac.uk/tex-archive/macros/latex/contrib/geometry/geometry.pdf
+% and http://en.wikibooks.org/wiki/LaTeX/Document_Structure
+\usepackage{geometry}
+% For header and footer
+% See: ftp://ctan.tug.org/tex-archive/macros/latex/contrib/fancyhdr/fancyhdr.pdf
+% and http://en.wikibooks.org/wiki/LaTeX/Document_Structure
+\usepackage{fancyhdr}
+% For prettier tables
+% See: http://ctan.mackichan.com/macros/latex/contrib/booktabs/booktabs.pdf
+% and  http://en.wikibooks.org/wiki/LaTeX/Tables
+\usepackage{booktabs}
+\usepackage[framed,numbered,autolinebreaks,useliterate]{mcode}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{longtable}
+\usepackage{array}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%% SETUP %%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Set the margins of the paper. By default LaTeX uses huge margins
+\geometry{includeheadfoot, margin=2.5cm}
+% you can also use
+% \geometry{a4paper}
+% End of margins setup
+
+% Setup header and footer
+% Headers
+
+%\pagestyle{fancy} % To get the header and footer
+%\chead{\small \textsc{Heimadæmi 7}}
+%\rhead{\small \textsc{Guðrún Kristín Einarsdóttir}}
+%\lhead{\small \textsc{Ólínuleg bestun}}
+% Footers
+%\lfoot{Left footer text}
+%\cfoot{\thepage} % This is the default behaviour
+%\rfoot{Right footer text}
+
+% If you don't want a line below the header or above the footer, 
+% change the appropriate header/footerrulewidth to 0pt
+\setlength{\headheight}{15.2pt} % This is set to avoid a warning
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+% End of header and footer setup
+
+
+% Setup Problem/Solution environments
+\theoremstyle{plain}
+\newtheorem{verkefni}{Verkefni}
+
+\theoremstyle{remark}
+\newtheorem*{lausn}{Lausn}
+% End of Problem/Solution environments setup
+
+%%%%%%%%%%%%%%%%%%%%%%%% END OF SETUP %%%%%%%%%%%%%%%%%%%%%%%%
+
+\titlepage
+
+\begin{document}
+\begin{center}
+
+
+\textsc{Háskóli Íslands}
+\end{center}
+\vspace*{5cm}
+
+
+
+\large {\bf
+\begin{center}
+\noindent\rule{15cm}{0.4pt}
+\textsc{Þróun Hugbúnaðar}\\ \textsc{Hópverkefni 2d}\\ Prófanir \\
+\noindent\rule{13cm}{0.4pt} \end{center}}
+\small
+\vspace{5cm}
+\begin{center}
+Ágúst Ingi Skarphéðinsson\\Guðrún Kristín Einarsdóttir\\Kári Ragnarsson\\Priyaphon Kaengjaroenkasikorn\\ Valur 
+Sigurbjörn Pálmarsson
+\end{center}
+\vspace{5cm}
+\begin{center}
+\today
+\end{center} 
+
+\newpage \normalsize 
+\newpage
+
+\section{Kerfispróf}
+
+Eftir að kapallinn var að fullu tilbúinn var farið í kerfisprófanir. Kerfisprófanirnar voru útfærðar m.t.t. notendasaganna til að ganga úr skugga um að virkni kapalsins frá sjónarhóli notanda væri í lagi.  Lýsing á kerfisprófum og niðurstöður þeirra eru taldar upp hér að neðan. Kerfispróf voru flokkuð eftir því í hvaða ítrun viðkomandi notandasaga var kláruð og bónusvirkni var því bætt við sem ítrun 4 þar sem hún var ekki til staðar í upphaflegum notendasögum.
+	
+\begin{longtable}{| m{1.7cm} | m{2.7cm} | m{3.3cm} | m{4cm} | m{1.4cm} | m{1.3cm} |}
+\hline
+& & & & & \\
+{\bf Auðkenni} & {\bf Markmið} & {\bf Framkvæmd} & {\bf Útkoma} & {\bf Staðið/} & {\bf Skýring} \\
+& & & & {\bf Fall} & \\
+ \hline
+1.1	& Hefja nýjan leik & Keyra skrána $kapall.py$ & Gluggi opnast með nýjum Tri Peaks kapli &	Staðið	& \\
+\hline
+1.2	& Hætta í leiknum &	Ýta á ESC þegar leikur er í gangi &	Glugginn með kaplinum lokast & Staðið & \\
+\hline
+1.3	& Sjá reglur leiksins &	1) Ýta á F1 þegar leikur er í gangi. 2) Ýta aftur á F1 & Leikreglur birtast í glugganum. Þegar ýtt er aftur á F1 þá hverfa reglurnar	& Staðið & \\
+\hline
+2.1	& Draga spil úr stokki & Smella á stokkinn & Efsta spil í stokknum færist yfir í hrúgu og verður efsta spil í hrúgu	& Staðið & \\
+\hline
+2.2a & Draga spil úr borði í hrúgu & 1) Smella á löglegt spil í borði.  2) Draga spilið með músinni að hrúgu & Spilið fer frá borði í hrúgu & Staðið	& \\
+\hline
+2.2b & Draga spil úr borði í hrúgu & 1) Smella á ólöglegt spil í borði. 2) Draga spilið með músinni að hrúgu & Spilið fer aftur á sinn stað í hrúgunni &	Staðið & \\
+\hline
+2.3	& Hefja leikinn upp á nýtt & Ýta á R þegar leikur er í gangi & Núverandi leikur hverfur og gefið er fyrir nýjan leik & Staðið & \\
+\hline
+2.4a & Sjá hvort maður hefur unnið eða tapað & Vinna kapalinn &	Viðmótið birtir skilaboð um að spilari hafi unnið og spilar skemmtilegt lag	& Staðið &		\\
+\hline
+2.4b & Sjá hvort maður hefur unnið eða tapað & Tapa kaplinum & Viðmótið birtir skilaboð um að spilari hafi tapað og spilar sorglegt lag	& Staðið & \\
+\hline
+2.5a & Sjá stig í leiknum &	Færa spil úr borði í hrúgu & Score hækkar um 150 & Staðið &	\\
+\hline
+2.5b & Sjá stig í leiknum &	Færa spil úr stokk í hrúgu & Score helst óbreytt & Staðið & \\
+\hline
+2.6	& Sjá leiktíma & Hefja nýjan leik &	Leiktíminn byrjar í 0 og hækkar svo eftir því sem tíminn líður & Staðið	& \\
+\hline
+2.7a & Sjá fjölda "moves" í leiknum	& Færa spil úr borði í hrúgu & Moves hækkar um 1 & Staðið & \\
+\hline
+2.7b & Sjá fjölda "moves" í leiknum	& Færa spil úr stokk í hrúgu & Moves hækkar um 1 & Staðið & \\
+\hline
+3.1	& Sjá highscore töflu & & & & \\
+\hline
+3.2	& Leikurinn hefur grafískt viðmót	&	Keyra skrána kapall.py	&	Leikurinn birtisti í glugga með grafísku viðmóti	&	Staðið	&		\\
+\hline
+4.1a	&	Tvísmellur á spil í borði færir það í hrúgu	&	Tvísmella á löglegt spil í borði 	&	Spilið fer frá borði í hrúgu	&	Staðið	&		\\
+\hline
+4.1b	&	Tvísmellur á spil í borði færir það í hrúgu	&	Tvísmella á ólöglegt spil í borði 	&	Spilið fer aftur á sinn stað í hrúgunni	&	Staðið	&		\\
+\hline
+4.2	&	Animation þegar spil í borði fer yfir í hrúgu	&	Tvísmella á löglegt spil í borði 	&	Spilið hreyfist frá sínum stað að hrúgunni	&	Staðið	&		\\
+\hline
+4.3a	&	Hljóð þegar spil er fært	&	Færa spil úr borði í hrúgu 	&	Spilahljóð heyrist	&	Staðið	&		\\
+\hline
+4.3b	&	Hljóð þegar spil er fært	&	Færa spil úr stokk í hrúgu 	&	Spilahljóð heyrist	&	Staðið	&		\\
+\hline
+4.4	&	Hljóð þegar notandi vinnur	&	Vinna kapalinn	&	Glaðlegt lag spilast	&	Staðið	&		\\
+\hline
+4.5	&	Hljóð þegar notandi tapar	&	Tapa kaplinum	&	Sorglegt lag spilast	&	Staðið	&		\\
+\hline
+4.6	&	Möguleg move eru sýnd (hint) & Ýta á H þegar leikur er í gangi	&	Þau spil sem ekki er hægt að færa í hrúguna verða "gegnsæ", hin sem hægt er að færa haldast óbreytt	&	Staðið	&		\\
+\hline
+4.7	&	Mynd er í bakgrunni	&	Hefja nýjan leik	&	Mynd sést í bakgrunni kapalsins	&	Staðið	&		\\
+\hline
+4.8	&	Animation þegar spil er fært úr stokki í hrúgu	&	Færa spil úr stokk í hrúgu 	&	Efsta spil í stokknum hreyfist yfir að hrúgunni	&	Staðið	&		\\
+\hline
+4.9	&	Spil verða "gegnsæ" þegar leikur klárast	&	Tapa kaplinum	&	Þau spil sem eftir eru í borðinu verða gegnsæ svo augljóst er að ekki er hægt að hreyfa þau	&	Staðið	&		\\
+\hline
+4.10	&	Animation þegar spil eru gefin í borð	&	Hefja nýjan leik	&	Leikurinn byrjar með tómt borð og eitt í einu hreyfast spilin úr stokknum í borðið	&	Staðið	&		\\
+\hline
+4.11	&	Pöndumynd á spilunum	&	Hefja nýjan leik	&	Spilin í kaplinum hafa ótrúlega sæta mynd af pönduunga á bakhliðinni	&	Staðið	&		\\
+\hline
+\end{longtable}
+
+\section{Einingapróf}
+
+Lýsing á einingaprófum (fjöldi og dekkun).
+
+
+	
+\end{document}
+
