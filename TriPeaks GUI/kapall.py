@@ -6,6 +6,8 @@ from collections import deque
 
 class TriPeaksGUI(object):
 
+    # Constants:
+
     FPS = 30                    # Frames per second, the general speed of the program
     WINDOWWIDTH = 1000          # Window's width in pixels
     WINDOWHEIGHT = 600          # Windows' height in pixels
@@ -13,13 +15,10 @@ class TriPeaksGUI(object):
     CARDHEIGHT = 96             # Card height in pixels
     OFFSETX = CARDWIDTH/2.0     # To find the midpoint of card
     OFFSETY = CARDHEIGHT/2.0    # To find the midpoint of card
-    startx = 100                # Start drawing the board cards at this point
-    starty = 100                # Start drawing the board cards at this point
     GAPSIZE = 10                # Size of gap between cards in pixels
     BOARDCOLS = 10              # Number of columns of cards
     BOARDROWS = 4               # Number of rows of cards
     BGCOLOR = (0, 150, 0)       # Green background color
-
 
     def __init__(self):
         pygame.init()
@@ -156,6 +155,7 @@ class TriPeaksGUI(object):
         if self.game.hasWon():
             self.game.isPlaying = False
             self.hasWon = True
+            self.rockyWinSound.play()
             
         elif self.game.hasLost():
             self.game.isPlaying = False
@@ -182,23 +182,29 @@ class TriPeaksGUI(object):
 
         self.mousex = 0 # x coordinate of mouse event
         self.mousey = 0 # y coordinate of mouse event
+
+
+        self.startx = 100                # Start drawing the board cards at this point
+        self.starty = 100                # Start drawing the board cards at this point
         
         self.heapRect = pygame.Rect(400, 450, self.CARDWIDTH, self.CARDHEIGHT)  # Rectangle around the heap cards
         self.deckRect = pygame.Rect(100, 450, self.CARDWIDTH, self.CARDHEIGHT)  # Rectangle around the deck cards
         
-        self.initCardsPos()
-
         self.cardSound = pygame.mixer.Sound("card2.wav")
         self.sweepSound = pygame.mixer.Sound("sweep.wav")
         self.sadLoseSound = pygame.mixer.Sound("sadLose.wav")
+        self.rockyWinSound = pygame.mixer.Sound("rocky.wav")
+        self.shuffleSound = pygame.mixer.Sound("shuffle.wav")
 
         self.backgroundImg = pygame.image.load('woodBackground.jpg')
 
+        self.initCardsPos()
 
     # Pre:  A TriPeaksGUI object has been created
     # Post: The cards in the board are assigned their positions 
     # Run:  TriPeaksGUI.initCardsPos()
-    def initCardsPos(self):
+    def initCardsPos(self):        
+        self.shuffleSound.play()
         for row in range(self.BOARDROWS):
             for col in range(self.BOARDCOLS):
                 if self.game.board[row][col] is not None:
