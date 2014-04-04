@@ -56,6 +56,10 @@ class TriPeaksGUI(object):
                 # Test: show help
                 if event.type == KEYUP and event.key == K_F1:
                     self.showHelp = not self.showHelp
+                    self.showScore = False
+                elif event.type == KEYUP and event.key == K_t:
+                    self.showScore = not self.showScore
+                    self.showHelp = False
                 # Event when the mouse is moved
                 elif event.type == MOUSEMOTION:
                     self.onMouseMove(event)
@@ -169,6 +173,8 @@ class TriPeaksGUI(object):
         self.hasLost = False
         self.showHelp = False           # Help instructions shown if True
         self.showHints = False          # Legal cards shown if True
+        self.showScore = False
+        self.scores = self.game.highscoreTable()
         self.selectedCard = None        # The card selected with the mouse
         self.lastClickTime = 0.0        # The time of last mouse click
         self.doubleClickInterval = 0.3  # The threshold interval between clicks in double mouse click
@@ -248,14 +254,17 @@ class TriPeaksGUI(object):
         quitStr = 'Press ESC to quit'
         helpStr = 'Press F1 to show/hide help'
         hintStr = 'Press H to show/hide legal cards'
+        scoreStr = 'Press T to view the top 5 Tri Peaks players'
         restartText = font.render(restartStr, True, (255, 255, 255))
         quitText = font.render(quitStr, True, (255, 255, 255))
         helpText = font.render(helpStr, True, (255, 255, 255))
         hintText = font.render(hintStr, True, (255, 255, 255))
+        scoreText = font.render(scoreStr, True, (255, 255, 255))
         DISPLAYSURF.blit(restartText, (710, 510))
         DISPLAYSURF.blit(quitText, (710, 530))
         DISPLAYSURF.blit(helpText, (710, 550))
         DISPLAYSURF.blit(hintText, (710, 570))
+        DISPLAYSURF.blit(scoreText, (710, 590))
 
         # shows cards left
         cardsleftStr = 'Cards left : ' + str(int(self.game.deckSize()))
@@ -280,6 +289,9 @@ class TriPeaksGUI(object):
             DISPLAYSURF.blit(helpText3, (600, 440))
             DISPLAYSURF.blit(helpText4, (600, 460))
             DISPLAYSURF.blit(helpText5, (600, 480))
+
+        if self.showScore:
+            self.highScores()
 
         # Shows heap
         for (i, card) in enumerate(self.game.heap):
@@ -332,6 +344,52 @@ class TriPeaksGUI(object):
             againText = font2.render(againStr, True, (255,0,0))
             DISPLAYSURF.blit(loseText, (300, 200))
             DISPLAYSURF.blit(againText, (200, 270))
+
+
+    def highScores(self):
+        font = pygame.font.SysFont("comicsansms", 18)
+        table = 'Top 5'
+        header = 'Name      Points      Time      Moves'
+        line = '------------------------------------'
+        h = 420
+        for row in self.scores:
+            w = 600
+            for col in row:
+                DISPLAYSURF.blit(font.render(str(col)[0:6], True, (0, 0, 0)), (w, h))
+                w += 80
+            h += 20
+    
+        lineText = font.render(line, True, (0, 0, 0))
+        tableText = font.render(table, True, (0, 0, 0))
+        headerText = font.render(header, True, (0, 0, 0))
+    
+        DISPLAYSURF.blit(tableText, (700, 380))
+        DISPLAYSURF.blit(headerText, (600, 400))
+        DISPLAYSURF.blit(lineText, (600, 407))
+
+    def newHighScore:
+        findScoreCol = 0
+        for row in self.scores:
+            findScoreCol += 1
+            for col in row:
+                if findScoreCol == 2 and self.game.score > col:
+                    font = pygame.font.SysFont("comicsansms", 35)
+                    DISPLAYSURF.blit(font.render("You got a new high score! Enter your name:", True, (255, 255, 255)), (350, 290))
+                    nameStr = ''
+                    while not event.type == KEYUP and not event.key == K_ENTER:
+                        nameStr += str(event.key)
+                        nameText = font.render(nameStr, True, (255, 255, 255))
+                        DISPLAYSURF.blit(nameText, (350, 310))
+                with open("highscores.csv", "w") as csvfile:
+                    a = csv.writer(csvfile, delimiter = ',')
+                    self.scores.append([nameStr, self.game.score, self.game.finaltime, self.game.moves])
+                    self.scores.sort(key=lambda x: x[1])
+                    self.scores.reverse()
+                    a.writerows(self.scores[0:5])
+                
+                self.highScores()
+
+
 
 
     # Pre:  row and col are integers
