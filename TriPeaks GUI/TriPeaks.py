@@ -147,7 +147,6 @@ class TriPeaks(object):
     # Run:  TriPeaks.getBoardCard(cardString)
     def getBoardCard(self, cardString):
         ''' Finds the card cardString in the board and moves to the heap '''
-        # TODO: laga tetta fall, er bara skitamix
         for i,row in enumerate(self.board):
             for j,c in enumerate(row):
                 if (c is not None and c.toString() == cardString):
@@ -159,16 +158,16 @@ class TriPeaks(object):
                     else:
                         print "\nThis move is not legal, try again!"
 
-    # GKE: 24/03/2014, baetti vid tessu falli, tarf ad skoda betur
+    # Pre:  card is a Card object
+    # Post: removes card from board to the heap and returns it
+    # Run:  TriPeaks.moveToHeap(card)
     def moveToHeap(self, card):
         ''' Moves the card to the heap '''
-        # TODO: laga tetta fall, er bara skitamix
-        
         if (card is not None):
             if (self.isLegal(card) and self.isMovable(card.row,card.col)):
                 self.board[card.row][card.col] = None
                 self.addScore(150)
-                self.moves += 1         # GKE: baetti vid tessu
+                self.moves += 1
                 self.heap.append(card) 
                 return card
             else:
